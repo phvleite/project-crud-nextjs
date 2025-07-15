@@ -1,3 +1,6 @@
+import Botao from "./components/Botao";
+import Entrada from "./components/Entrada";
+import Formulario from "./components/Formulario";
 import Layout from "./components/Layout";
 import Tabela from "./components/Tabela";
 import Cliente from "./core/Cliente";
@@ -31,11 +34,21 @@ export default function Home() {
             bg-gradient-to-r from-blue-500 to-purple-500 text-white
         `}>
             <Layout titulo="Cadastro Simples">
-                <Tabela
+                <div className="flex justify-end">
+                    <Botao
+                        className="mb-4"
+                        onClick={() => console.log('Novo Cliente')}
+                        cor="blue"
+                    >
+                        Novo Cliente
+                    </Botao>
+                </div>
+                {/* <Tabela
                     clientes={clientes}
                     clienteSelecionado={clienteSelecionado}
                     clienteExcluido={clienteExcluido}
-                />
+                /> */}
+                <Formulario cliente={clientes[1]} />
             </Layout>
         </div>
     );

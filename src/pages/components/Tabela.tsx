@@ -30,7 +30,7 @@ const Tabela = (props: TabelaProps) => {
                         className={`
                             flex justify-center items-center
                             text-green-600 rounded-full p-2 m-1
-                            hover:bg-purple-50 hover:text-purple-800
+                            hover:bg-purple-50 hover:text-purple-800 hover:shadow-lg
                         `}
                         onClick={() => props.clienteSelecionado?.(cliente)}
                     >
@@ -42,7 +42,7 @@ const Tabela = (props: TabelaProps) => {
                         className={`
                             flex justify-center items-center
                             text-red-600 rounded-full p-2 m-1
-                            hover:bg-purple-50 hover:text-purple-800
+                            hover:bg-purple-50 hover:text-purple-800 hover:shadow-lg
                         `}
                         onClick={() => props.clienteExcluido?.(cliente)}
                     >
