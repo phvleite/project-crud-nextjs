@@ -1,22 +1,38 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Botao from "./components/Botao";
 import Formulario from "./components/Formulario";
 import Layout from "./components/Layout";
 import Tabela from "./components/Tabela";
 import Cliente from "./core/Cliente";
+import ClienteRepositorio from "./core/ClienteRepositorio";
+import ColecaoCliente from "@/backend/db/ColecaoCliente";
 
 export default function Home() {
 
+    const repo: ClienteRepositorio = useMemo(() => new ColecaoCliente(), []);
+
     const [visivel, setVisivel] = useState<'tabela' | 'form'>('tabela');
     const [cliente, setCliente] = useState<Cliente>(Cliente.vazio());
+    const [clientes, setClientes] = useState<Cliente[]>([]);
+
+    const obterTodos = () => {
+        repo.obterTodos().then(clientes => {
+            setClientes(clientes.map(c => new Cliente(c.id ?? '', c.nome ?? '', c.idade ?? 0)));
+            setVisivel('tabela');
+        });
+    };
+   
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(obterTodos, []);
 
     const clienteSelecionado = (cliente: Cliente) => {
         setCliente(cliente);
         setVisivel('form');
     };
 
-    const clienteExcluido = (cliente: Cliente) => {
-        console.log(`Excluir: ${cliente.nome}`);
+    const clienteExcluido = async (cliente: Cliente) => {
+        await repo.excluir(cliente);
+        obterTodos();
     };
 
     const novoCliente = () => {
@@ -24,23 +40,11 @@ export default function Home() {
         setVisivel('form');
     };
 
-    const salvarCliente = (cliente: { id?: string; nome?: string; idade?: number }) => {
-        console.log(`Salvar: ${cliente.nome}`);
+    const salvarCliente = async (cliente: { id?: string; nome?: string; idade?: number }) => {
+        await repo.salvar(cliente);
+        obterTodos();
         setVisivel('tabela');
     };
-
-    const clientes = [
-        new Cliente('1', 'João Alencar Furtado', 20),
-        new Cliente('2', 'Maria Setembrina de Oliveira', 35),
-        new Cliente('3', 'Pedro Patriota', 24),
-        new Cliente('4', 'Lauro Rigotto', 38),
-        new Cliente('5', 'Claudio Montenegro', 42),
-        new Cliente('6', 'Breno Faria Santos', 58),
-        new Cliente('7', 'Gilberto Felipe Santos', 18),
-        new Cliente('8', 'Helena Claudia Bezerra', 25),
-        new Cliente('9', 'Roberta Maria e Silva', 33),
-        new Cliente('10', 'Ricardo Sobrinho Lafaiete', 26),
-    ];
 
     return (
         <div className={`

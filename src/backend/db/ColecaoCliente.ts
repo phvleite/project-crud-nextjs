@@ -1,5 +1,6 @@
 import ClienteRepositorio from "@/pages/core/ClienteRepositorio";
-import firebase from "firebase/compat/app";
+import firebase from "../config";
+import "firebase/compat/firestore";
 import { SnapshotOptions } from "firebase/firestore";
 
 export default class ColecaoCliente implements ClienteRepositorio {
@@ -29,8 +30,7 @@ export default class ColecaoCliente implements ClienteRepositorio {
         if (cliente.id) {
             await this.colecao().doc(cliente.id).set(cliente);
         } else {
-            const docRef = await this.colecao().add(cliente);
-            cliente.id = docRef.id;
+            await this.colecao().add(cliente);
         }
     }
 

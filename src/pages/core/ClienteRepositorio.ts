@@ -5,4 +5,3 @@ export default interface ClienteRepositorio {
     obterPorId(id: string): Promise<{ id?: string; nome?: string; idade?: number } | null>;
     atualizar(cliente: { id?: string; nome?: string; idade?: number }): Promise<void>;
 }
-
